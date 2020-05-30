@@ -35,7 +35,7 @@ def binary_histogram(df, col_names, save=True, save_name='example'):
 
 if __name__ == '__main__':
     print('data analysis')
-    df = data_preprocess.read_csv_to_df('./data/train_small.csv')
+    df = data_preprocess.read_csv_to_df('./data/train.csv')
     # count_each_column(df)
 
     # split fraud and real data

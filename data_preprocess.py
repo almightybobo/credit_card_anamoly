@@ -1,4 +1,5 @@
 # data preprocess
+import sklearn
 import pandas as pd
 
 def read_csv_to_df(filename):
@@ -18,6 +19,13 @@ def normalize_regression_feature(df, columns):
     for column in columns:
         df[column] = (df[column] - df[column].min()) / (df[column].max() - df[column].min())
     return df
+
+def one_hot_encoding(df, columns):
+    enc = sklearn.preprocessing.OneHotEncoder()
+    for column in columns:
+        return
+
+
 
 def _get_rows_based_on_column_val(df, col_name, val):
     rows = df.loc[df[col_name] == val]
