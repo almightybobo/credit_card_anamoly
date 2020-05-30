@@ -39,13 +39,13 @@ def preprocess_data(df):
     df = normalize_regression_feature(df, ['conam', 'iterm'])
     return df
 
-def split_train_valid(df):
+def split_train_valid(df, percent=0.7):
     fraud = get_fraud(df)
     fraud_size = fraud.shape[0]
     real = get_real(df)
     real_size = real.shape[0]
-    fraud1, fraud2 = fraud[: int(fraud_size*0.7)], fraud[int(fraud_size*0.7):]
-    real1, real2 = real[: int(real_size*0.7)], fraud[int(real_size*0.7):]
+    fraud1, fraud2 = fraud[: int(fraud_size*percent)], fraud[int(fraud_size*percet):]
+    real1, real2 = real[: int(real_size*percent)], fraud[int(real_size*percent):]
     train = pd.concat([fraud1, real1])
     validation = pd.concat([fraud2, real2])
 
