@@ -1,0 +1,86 @@
+data analysis
+acqic: 6051
+bacno: 95214
+cano: 129413
+conam: 72961
+contp: 7
+csmcu: 72
+ecfg: 2
+etymd: 11
+flbmk: 2
+flg_3dsmk: 2
+fraud_ind: 2
+hcefg: 9
+insfg: 2
+iterm: 9
+locdt: 90
+loctm: 84810
+mcc: 434
+mchno: 89316
+ovrlt: 2
+scity: 5698
+stocn: 103
+stscd: 5
+txkey: 1521787
+---- contp ---
+5    1369806
+4      69965
+2      66147
+6      13593
+3       2148
+1         84
+0         44
+Name: contp, dtype: int64
+---- ecfg ---
+N    1134512
+Y     387275
+Name: ecfg, dtype: int64
+---- flbmk ---
+N    1504133
+Y       5073
+Name: flbmk, dtype: int64
+---- flg_3dsmk ---
+N    1444867
+Y      64339
+Name: flg_3dsmk, dtype: int64
+---- fraud_ind ---
+0    1501432
+1      20355
+Name: fraud_ind, dtype: int64
+---- hcefg ---
+5    1412039
+0      53925
+1      33055
+6      12581
+8       3820
+2       3365
+7       1788
+9        901
+3        313
+Name: hcefg, dtype: int64
+---- insfg ---
+N    1479475
+Y      42312
+Name: insfg, dtype: int64
+---- iterm ---
+0    1479498
+1      22590
+2      15045
+4       2686
+7        854
+3        448
+8        429
+6        160
+5         77
+Name: iterm, dtype: int64
+---- ovrlt ---
+N    1501536
+Y      20251
+Name: ovrlt, dtype: int64
+---- stscd ---
+0    1502745
+2      18506
+1        408
+3        108
+4         20
+Name: stscd, dtype: int64
