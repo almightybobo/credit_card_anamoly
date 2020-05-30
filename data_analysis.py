@@ -4,19 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import data_preprocess
 
-def _get_rows_based_on_column_val(df, col_name, val):
-    rows = df.loc[df[col_name] == val]
-    print('Rows number about {} with {}: {}'.format(col_name, val, rows.shape[0]))
-    return rows
-
-def get_fraud(df):
-    fraud = _get_rows_based_on_column_val(df, 'fraud_ind', 1)
-    return fraud
-
-def get_real(df):
-    real = _get_rows_based_on_column_val(df, 'fraud_ind', 0)
-    return real
-
 def count_each_column(df):
     size = []
     for c in df.columns:
@@ -52,9 +39,9 @@ if __name__ == '__main__':
     # count_each_column(df)
 
     # split fraud and real data
-    fraud = get_fraud(df)
+    fraud = data_preprocess.get_fraud(df)
     binary_histogram(fraud, ['ecfg', 'insfg', 'ovrlt', 'flbmk', 'flg_3dsmk'], True, 'fraud_binary')
-    real = get_real(df)
+    real = data_preprocess.get_real(df)
     binary_histogram(real, ['ecfg', 'insfg', 'ovrlt', 'flbmk', 'flg_3dsmk'], True, 'real_binary')
 
     
