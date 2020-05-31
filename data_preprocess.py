@@ -21,11 +21,10 @@ def normalize_regression_feature(df, columns):
     return df
 
 def one_hot_encoding(df, columns):
-    enc = sklearn.preprocessing.OneHotEncoder()
     for column in columns:
-        return
-
-
+        df = pd.concat([df,pd.get_dummies(df[column], prefix=column)],axis=1)
+        df.drop([column],axis=1, inplace=True)
+    return df
 
 def _get_rows_based_on_column_val(df, col_name, val):
     rows = df.loc[df[col_name] == val]
@@ -45,6 +44,7 @@ def preprocess_data(df):
     df = replace_NY_to_01(df, ['ecfg', 'insfg', 'ovrlt', 'flbmk', 'flg_3dsmk'])
     # continuous value -> normalize value to 0~1
     df = normalize_regression_feature(df, ['conam', 'iterm'])
+    df = one_hot_encoding(df, ['contp', 'etymd', 'stscd', 'hcefg', 'csmcu'])
     return df
 
 def split_train_valid(df, percent=0.7):
@@ -52,7 +52,7 @@ def split_train_valid(df, percent=0.7):
     fraud_size = fraud.shape[0]
     real = get_real(df)
     real_size = real.shape[0]
-    fraud1, fraud2 = fraud[: int(fraud_size*percent)], fraud[int(fraud_size*percet):]
+    fraud1, fraud2 = fraud[: int(fraud_size*percent)], fraud[int(fraud_size*percent):]
     real1, real2 = real[: int(real_size*percent)], fraud[int(real_size*percent):]
     train = pd.concat([fraud1, real1])
     validation = pd.concat([fraud2, real2])
@@ -68,8 +68,8 @@ if __name__ == '__main__':
     target -> fraud_ind
     id -> bacno, txkey, cano
     time -> locdt, loctm
-    multi class(<100 class?) -> contp, etymd, (stocn, scity), stscd, hcefg, csmcu
-    multi class (>100 class?) -> (mchnom, mcc), acquic
+    multi class(<100 class?) -> contp, etymd, , stscd, hcefg, csmcu
+    multi class (>100 class?) -> (stocn, scity), (mchnom, mcc), acquic
     '''
     df = read_csv_to_df('./data/train_small.csv')
     df = preprocess_data(df)
