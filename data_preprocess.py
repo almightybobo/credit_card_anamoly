@@ -1,6 +1,6 @@
 # data preprocess
-import sklearn
 import pandas as pd
+from sklearn.utils import shuffle
 
 def read_csv_to_df(filename):
     df = pd.read_csv(filename)
@@ -45,7 +45,19 @@ def preprocess_data(df):
     # continuous value -> normalize value to 0~1
     df = normalize_regression_feature(df, ['conam', 'iterm'])
     df = one_hot_encoding(df, ['contp', 'etymd', 'stscd', 'hcefg', 'csmcu'])
+    df.drop(df.columns[[0]], axis=1, inplace=True)
+    df.drop(['bacno', 'txkey', 'cano'], axis=1, inplace=True)
     return df
+
+def _shuffle_dataframe(df):
+    index = df.index
+    df = shuffle(df)
+    df.index = index
+    return df
+
+def _split_label_features(df):
+    label = df.pop('fraud_ind').to_numpy()
+    return label, df.to_numpy
 
 def split_train_valid(df, percent=0.7):
     fraud = get_fraud(df)
@@ -56,8 +68,14 @@ def split_train_valid(df, percent=0.7):
     real1, real2 = real[: int(real_size*percent)], fraud[int(real_size*percent):]
     train = pd.concat([fraud1, real1])
     validation = pd.concat([fraud2, real2])
+    
+    train = _shuffle_dataframe(train)
+    validation = _shuffle_dataframe(validation)
 
-    return train, validation
+    trX, trY = _split_label_features(train)
+    vaX, vaY = _split_label_features(validation)
+
+    return trX, trY, vaX, vaY 
 
 def feature_extraction():
     pass
@@ -73,6 +91,6 @@ if __name__ == '__main__':
     '''
     df = read_csv_to_df('./data/train_small.csv')
     df = preprocess_data(df)
-    train, validation = split_train_valid(df)
-    print(train, validation)
+    trX, trY, vaX, vaY = split_train_valid(df)
+    print(trX, trY, vaX, vaY)
     write_df_to_csv(df, './data/train_small_test.csv')
