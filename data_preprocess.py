@@ -11,8 +11,8 @@ def write_df_to_csv(df, filename):
 
 def replace_NY_to_01(df, columns):
     for column in columns:
-      df[column].replace('N', '0', inplace=True)
-      df[column].replace('Y', '1', inplace=True)
+      df[column].replace('N', 0, inplace=True)
+      df[column].replace('Y', 1, inplace=True)
     return df
 
 def normalize_regression_feature(df, columns):
@@ -57,15 +57,15 @@ def _shuffle_dataframe(df):
 
 def _split_label_features(df):
     label = df.pop('fraud_ind').to_numpy()
-    return label, df.to_numpy
+    return df.to_numpy(), label
 
 def split_train_valid(df, percent=0.7):
     fraud = get_fraud(df)
     fraud_size = fraud.shape[0]
     real = get_real(df)
     real_size = real.shape[0]
-    fraud1, fraud2 = fraud[: int(fraud_size*percent)], fraud[int(fraud_size*percent):]
-    real1, real2 = real[: int(real_size*percent)], fraud[int(real_size*percent):]
+    fraud1, fraud2 = fraud[:int(fraud_size*percent)], fraud[int(fraud_size*percent):]
+    real1, real2 = real[:int(real_size*percent)], real[int(real_size*percent):]
     train = pd.concat([fraud1, real1])
     validation = pd.concat([fraud2, real2])
     
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     target -> fraud_ind
     id -> bacno, txkey, cano
     time -> locdt, loctm
-    multi class(<100 class?) -> contp, etymd, , stscd, hcefg, csmcu
+    multi class(<100 class?) -> contp, etymd, stscd, hcefg, csmcu
     multi class (>100 class?) -> (stocn, scity), (mchnom, mcc), acquic
     '''
     df = read_csv_to_df('./data/train_small.csv')
