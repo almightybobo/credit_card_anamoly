@@ -6,5 +6,14 @@
 
 ### TODO
 - Write main script to run the model (baseline)
-- Data analysis - time features and regression features
 - Delete some features, one-hot encoding some features
+
+## 5/31
+### Progress
+- Write main script, can train now (eval metrics: auc -> aucpr)
+- Delete some features, one-hot encoding some features
+
+### TODO
+- Data analysis - time features and regression features
+- Combine (stocn, sorcity)
+- Multi-label features analysis
