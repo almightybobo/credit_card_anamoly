@@ -39,7 +39,7 @@ def get_real(df):
     real = _get_rows_based_on_column_val(df, 'fraud_ind', 0)
     return real
 
-def preprocess_data(df):
+def preprocess_data1(df):
     # binary class -> N to 0, Y to 1
     df = replace_NY_to_01(df, ['ecfg', 'insfg', 'ovrlt', 'flbmk', 'flg_3dsmk'])
     # continuous value -> normalize value to 0~1
@@ -47,6 +47,15 @@ def preprocess_data(df):
     df = one_hot_encoding(df, ['contp', 'etymd', 'stscd', 'hcefg', 'csmcu'])
     df.drop(df.columns[[0]], axis=1, inplace=True)
     df.drop(['bacno', 'txkey', 'cano'], axis=1, inplace=True)
+    return df
+
+def preprocess_data2(df):
+    # binary class -> N to 0, Y to 1
+    df = replace_NY_to_01(df, ['ecfg', 'insfg', 'ovrlt', 'flbmk', 'flg_3dsmk'])
+    # continuous value -> normalize value to 0~1
+    df = normalize_regression_feature(df, ['conam', 'iterm'])
+    df = one_hot_encoding(df, ['contp', 'etymd', 'stocn', 'stscd', 'hcefg', 'csmcu', 'locdt', 'mcc'])
+    df.drop(['bacno', 'txkey', 'cano', 'mchno', 'scity'], axis=1, inplace=True)
     return df
 
 def _shuffle_dataframe(df):

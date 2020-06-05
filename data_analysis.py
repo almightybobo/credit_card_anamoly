@@ -1,5 +1,6 @@
 # data visualization
 import os
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import data_preprocess
@@ -32,17 +33,27 @@ def binary_histogram(df, col_names, save=True, save_name='example'):
         save_path = os.path.join('pic', save_name)
         plt.savefig(save_path)
 
+def line_chart(df1, col_name, save=True, save_name='example'):
+    df = pd.DataFrame()
+    df[col_name] = df1[col_name].sort_values()
+    line = df.plot.kde()
+
+    if save:
+        save_path = os.path.join('pic', save_name)
+        fig = line.get_figure()
+        fig.savefig(save_path)
 
 if __name__ == '__main__':
-    print('data analysis')
     df = data_preprocess.read_csv_to_df('./data/train.csv')
     # count_each_column(df)
 
     # split fraud and real data
     fraud = data_preprocess.get_fraud(df)
-    binary_histogram(fraud, ['ecfg', 'insfg', 'ovrlt', 'flbmk', 'flg_3dsmk'], True, 'fraud_binary')
+    # binary_histogram(fraud, ['ecfg', 'insfg', 'ovrlt', 'flbmk', 'flg_3dsmk'], True, 'fraud_binary')
     real = data_preprocess.get_real(df)
-    binary_histogram(real, ['ecfg', 'insfg', 'ovrlt', 'flbmk', 'flg_3dsmk'], True, 'real_binary')
+    # binary_histogram(real, ['ecfg', 'insfg', 'ovrlt', 'flbmk', 'flg_3dsmk'], True, 'real_binary')
+    line_chart(fraud, 'conam', True, 'fraud_conam')
+    line_chart(real, 'conam', True, 'real_conam')
 
     
     
