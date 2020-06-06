@@ -15,7 +15,7 @@ def xgb_model(tr, va, model_path, **kwargs):
         clf_name = model_path
     else:
         clf_name = None
-    for e in range(kwargs.get('epoch', 100) // kwargs.get('save_period', 5)):
+    for e in range(kwargs.get('epoch', 1000) // kwargs.get('save_period', 5)):
         clf = xgb.train(
                 params, 
                 tr, 
