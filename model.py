@@ -16,8 +16,8 @@ def xgb_model(tr, va, model_path='./model/xgb', **kwargs):
             100, 
             watch_list, 
             early_stopping_rounds=10, 
-            save_period=5, 
-            model_dir='./model')
+            save_period=kwargs.get('save_period', 5), 
+            model_dir=kwargs.get('model_dir', './model'))
     clf.save_model(model_path)
     return clf
 
