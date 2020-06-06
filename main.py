@@ -9,10 +9,16 @@ if __name__ == '__main__':
     parser.add_argument('-m', '--model', default='', type=str)
     args = parser.parse_args()
 
-    print('read data')
-    df = data_preprocess.read_csv_to_df(args.data)
-    print('data preprocess')
-    df = data_preprocess.preprocess_data2(df)
+    # print('read data')
+    # df = data_preprocess.read_csv_to_df(args.data)
+    # print('data preprocess')
+    # df = data_preprocess.preprocess_data2(df)
+    # print('split dataset')
+    # data_preprocess.split_train_valid(df)
+    # exit()
+    # print('get dmatrix')
+    tr, va = data_preprocess.get_dmatrix(
+            './data/tr_nh.csv?format=csv&label_column=10',
+            './data/va_nh.csv?format=csv&label_column=10')
     print('train')
-    trX, trY, vaX, vaY = data_preprocess.split_train_valid(df)
-    clf = model.xgb_model(trX, trY, vaX, vaY, model_path=args.model)
+    clf = model.xgb_model(tr, va, model_path=args.model)

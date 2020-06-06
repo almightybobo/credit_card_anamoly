@@ -1,18 +1,15 @@
 ## run model and predict
-from xgboost.sklearn import XGBClassifier
+import xgboost as xgb
 import pickle
 import os
 
-def xgb_model(trX, trY, vaX, vaY, model_path='./model/xgb'):
-    clf = XGBClassifier(n_estimators=100, scale_pos_weight=10, subsample=0.1)
-    eval_set = [(trX, trY), (vaX, vaY)]
-    clf.fit(trX, trY, 
-            early_stopping_rounds=10, 
-            eval_set=eval_set, 
-            eval_metric='aucpr', 
-            xgb_model=model_path if os.path.exists(model_path) else None,
-            verbose=True)
-
+def xgb_model(tr, va, model_path='./model/xgb'):
+    params = {
+            'scale_pos_weight': 20, 
+            'objective': 'binary:logistic'}
+    watch_list = [(va, 'eval'), (tr, 'train')]
+    print(tr.get_label())
+    clf = xgb.train(params, tr, 50, watch_list, early_stopping_rounds=10)
     clf.save_model(model_path)
     return clf
 

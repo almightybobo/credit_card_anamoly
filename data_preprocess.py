@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.utils import shuffle
+import xgboost as xgb
 
 def read_csv_to_df(filename):
     df = pd.read_csv(filename)
@@ -9,6 +10,11 @@ def read_csv_to_df(filename):
 
 def write_df_to_csv(df, filename):
     df.to_csv(filename, index=False)
+
+def get_dmatrix(tr_filename, va_filename):
+    dtr = xgb.DMatrix(tr_filename)
+    dva = xgb.DMatrix(va_filename)
+    return dtr, dva
 
 def replace_NY_to_01(df, columns):
     for column in columns:
@@ -91,10 +97,13 @@ def split_train_valid(df, percent=0.7):
     train = _shuffle_dataframe(train)
     validation = _shuffle_dataframe(validation)
 
-    trX, trY = _split_label_features(train)
-    vaX, vaY = _split_label_features(validation)
+    write_df_to_csv(train, './data/tr.csv')
+    write_df_to_csv(validation, './data/va.csv')
 
-    return trX, trY, vaX, vaY 
+    # trX, trY = _split_label_features(train)
+    # vaX, vaY = _split_label_features(validation)
+
+    # return trX, trY, vaX, vaY 
 
 def feature_extraction():
     pass
