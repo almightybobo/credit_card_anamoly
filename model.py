@@ -4,7 +4,7 @@ import pickle
 import os
 
 def xgb_model(trX, trY, vaX, vaY, model_path='./model/xgb'):
-    clf = XGBClassifier(n_estimators=100, scale_pos_weight=10)
+    clf = XGBClassifier(n_estimators=100, scale_pos_weight=10, subsample=0.1)
     eval_set = [(trX, trY), (vaX, vaY)]
     clf.fit(trX, trY, 
             early_stopping_rounds=10, 
