@@ -3,9 +3,9 @@ import xgboost as xgb
 import pickle
 import os
 
-def xgb_model(tr, va, model_path='./model/xgb'):
+def xgb_model(tr, va, model_path='./model/xgb', **kwargs):
     params = {
-            'subsample': 0.3, 
+            'subsample': kwargs.get('subsample', 0.3), 
             'scale_pos_weight': 20, 
             'objective': 'binary:logistic',
             'eval_metric': 'aucpr'}

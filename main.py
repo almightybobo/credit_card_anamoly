@@ -8,6 +8,7 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--train', default='./data/tr_nh.csv?format=csv&label_column=4', type=str)
     parser.add_argument('-v', '--valid', default='./data/va_nh.csv?format=csv&label_column=4', type=str)
     parser.add_argument('-m', '--model', default='./model/xgb', type=str)
+    parser.add_argument('--subsample', default=0.3, type=float)
     args = parser.parse_args()
 
     # print('read data')
@@ -24,4 +25,4 @@ if __name__ == '__main__':
             args.train,
             args.valid)
     print('train')
-    clf = model.xgb_model(tr, va, model_path=args.model)
+    clf = model.xgb_model(tr, va, model_path=args.model, subsample=args.subsample)
