@@ -5,7 +5,8 @@ import argparse
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--data', default='./data/train.csv', type=str)
+    parser.add_argument('-t', '--train', default='./data/tr_nh.csv?format=csv&label_column=4', type=str)
+    parser.add_argument('-v', '--valid', default='./data/va_nh.csv?format=csv&label_column=4', type=str)
     parser.add_argument('-m', '--model', default='./model/xgb', type=str)
     args = parser.parse_args()
 
@@ -20,7 +21,7 @@ if __name__ == '__main__':
     # exit()
     print('get dmatrix')
     tr, va = data_preprocess.get_dmatrix(
-            './data/tr_nh.csv?format=csv&label_column=4',
-            './data/va_nh.csv?format=csv&label_column=4')
+            args.train,
+            args.valid)
     print('train')
     clf = model.xgb_model(tr, va, model_path=args.model)
