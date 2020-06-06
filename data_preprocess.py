@@ -1,5 +1,6 @@
 # data preprocess
 import pandas as pd
+import numpy as np
 from sklearn.utils import shuffle
 
 def read_csv_to_df(filename):
@@ -23,7 +24,16 @@ def normalize_regression_feature(df, columns):
 def one_hot_encoding(df, columns):
     for column in columns:
         df = pd.concat([df,pd.get_dummies(df[column], prefix=column)],axis=1)
-        df.drop([column],axis=1, inplace=True)
+        df.drop([column], axis=1, inplace=True)
+    return df
+
+def time_interval(df, column_intervals):
+    for column, interval in column_intervals:
+        bins_range = list(range(int(df[column].min()), int(df[column].max()+2), interval))
+        label_range = list(range(0, len(bins_range)))
+        bins_range.append(np.inf)
+        df[column] = pd.cut(df[column], bins=bins_range, labels=label_range)
+        df = one_hot_encoding(df, [column])
     return df
 
 def _get_rows_based_on_column_val(df, col_name, val):
@@ -45,8 +55,7 @@ def preprocess_data1(df):
     # continuous value -> normalize value to 0~1
     df = normalize_regression_feature(df, ['conam', 'iterm'])
     df = one_hot_encoding(df, ['contp', 'etymd', 'stscd', 'hcefg', 'csmcu'])
-    df.drop(df.columns[[0]], axis=1, inplace=True)
-    df.drop(['bacno', 'txkey', 'cano'], axis=1, inplace=True)
+    df.drop(['acqic', 'bacno', 'txkey', 'cano'], axis=1, inplace=True)
     return df
 
 def preprocess_data2(df):
@@ -55,7 +64,8 @@ def preprocess_data2(df):
     # continuous value -> normalize value to 0~1
     df = normalize_regression_feature(df, ['conam', 'iterm'])
     df = one_hot_encoding(df, ['contp', 'etymd', 'stocn', 'stscd', 'hcefg', 'csmcu', 'locdt', 'mcc'])
-    df.drop(['bacno', 'txkey', 'cano', 'mchno', 'scity'], axis=1, inplace=True)
+    df = time_interval(df, ['loctm'])
+    df.drop(['acqic', 'bacno', 'txkey', 'cano', 'mchno', 'scity'], axis=1, inplace=True)
     return df
 
 def _shuffle_dataframe(df):
@@ -99,7 +109,9 @@ if __name__ == '__main__':
     multi class (>100 class?) -> (stocn, scity), (mchnom, mcc), acquic
     '''
     df = read_csv_to_df('./data/train_small.csv')
+    print(time_interval(df, [('loctm', 6380)]) )
+    exit()
     df = preprocess_data(df)
+    write_df_to_csv(df, './data/train_small_test.csv')
     trX, trY, vaX, vaY = split_train_valid(df)
     print(trX, trY, vaX, vaY)
-    write_df_to_csv(df, './data/train_small_test.csv')
