@@ -5,11 +5,12 @@ import os
 
 def xgb_model(tr, va, model_path='./model/xgb'):
     params = {
+            'subsample': 0.3, 
             'scale_pos_weight': 20, 
-            'objective': 'binary:logistic'}
-    watch_list = [(va, 'eval'), (tr, 'train')]
-    print(tr.get_label())
-    clf = xgb.train(params, tr, 50, watch_list, early_stopping_rounds=10)
+            'objective': 'binary:logistic',
+            'eval_metric': 'aucpr'}
+    watch_list = [(tr, 'train'), (va, 'eval')]
+    clf = xgb.train(params, tr, 100, watch_list, early_stopping_rounds=10)
     clf.save_model(model_path)
     return clf
 
