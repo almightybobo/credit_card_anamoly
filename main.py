@@ -10,7 +10,7 @@ if __name__ == '__main__':
     parser.add_argument('-m', '--model', default='./model/xgb', type=str)
     parser.add_argument('--model_dir', default='./model', type=str)
     parser.add_argument('--epoch', default=1000, type=int)
-    parser.add_argument('--save_period', default=5, type=int)
+    parser.add_argument('--save_period', default=50, type=int)
     parser.add_argument('--early_stopping_rounds', default=10, type=int)
     parser.add_argument('--subsample', default=0.3, type=float)
     args = parser.parse_args()
