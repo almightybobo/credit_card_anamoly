@@ -64,7 +64,7 @@ def preprocess_data2(df):
     # continuous value -> normalize value to 0~1
     df = normalize_regression_feature(df, ['conam', 'iterm'])
     df = one_hot_encoding(df, ['contp', 'etymd', 'stocn', 'stscd', 'hcefg', 'csmcu', 'locdt', 'mcc'])
-    df = time_interval(df, ['loctm'])
+    df = time_interval(df, [('loctm', 6380)])
     df.drop(['acqic', 'bacno', 'txkey', 'cano', 'mchno', 'scity'], axis=1, inplace=True)
     return df
 
