@@ -3,7 +3,7 @@ import xgboost as xgb
 import pickle
 import os
 
-def xgb_model(tr, va, model_path='./model/xgb', **kwargs):
+def xgb_model(tr, va, model_path=None, **kwargs):
     params = {
             'subsample': kwargs.get('subsample', 0.3), 
             'scale_pos_weight': 20, 
@@ -11,7 +11,9 @@ def xgb_model(tr, va, model_path='./model/xgb', **kwargs):
             'eval_metric': 'aucpr'}
     watch_list = [(tr, 'train'), (va, 'eval')]
 
-    clf_name = None
+    clf_name = model_path
+    if model_path is None:
+        model_path = './model/xgb'
     for e in range(kwargs.get('epoch', 100) // kwargs.get('save_period', 5)):
         clf = xgb.train(
                 params, 
