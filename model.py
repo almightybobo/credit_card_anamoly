@@ -10,7 +10,14 @@ def xgb_model(tr, va, model_path='./model/xgb', **kwargs):
             'objective': 'binary:logistic',
             'eval_metric': 'aucpr'}
     watch_list = [(tr, 'train'), (va, 'eval')]
-    clf = xgb.train(params, tr, 100, watch_list, early_stopping_rounds=10)
+    clf = xgb.train(
+            params, 
+            tr, 
+            100, 
+            watch_list, 
+            early_stopping_rounds=10, 
+            save_period=5, 
+            model_dir='./model')
     clf.save_model(model_path)
     return clf
 
