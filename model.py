@@ -10,15 +10,18 @@ def xgb_model(tr, va, model_path='./model/xgb', **kwargs):
             'objective': 'binary:logistic',
             'eval_metric': 'aucpr'}
     watch_list = [(tr, 'train'), (va, 'eval')]
-    clf = xgb.train(
-            params, 
-            tr, 
-            100, 
-            watch_list, 
-            early_stopping_rounds=10, 
-            save_period=kwargs.get('save_period', 5), 
-            model_dir=kwargs.get('model_dir', './model'))
-    clf.save_model(model_path)
+
+    clf_name = None
+    for e in range(kwargs.get('epoch', 100) // kwargs.get('save_period', 5)):
+        clf = xgb.train(
+                params, 
+                tr, 
+                kwargs.get('save_period', 5), 
+                watch_list, 
+                xgb_model=clf_name,
+                early_stopping_rounds=kwargs.get('early_stopping_rounds', 10))
+        clf_name = model_path + '_%d' % e
+        clf.save_model(clf_name)
     return clf
 
 def predict(model_path, features):
