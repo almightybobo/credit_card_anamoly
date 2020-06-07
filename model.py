@@ -22,6 +22,7 @@ def xgb_model(tr, va, model_path, **kwargs):
                 kwargs.get('save_period', 5), 
                 watch_list, 
                 xgb_model=clf_name,
+                maximize=True,
                 early_stopping_rounds=kwargs.get('early_stopping_rounds', 10))
         clf_name = model_path + '_%d' % e
         clf.save_model(clf_name)
